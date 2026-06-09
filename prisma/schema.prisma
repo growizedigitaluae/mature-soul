@@ -1,0 +1,96 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// NextAuth Account Mapping Engine
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// NextAuth Session Engine
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Global Identity Profile Table
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // NextAuth System Relations
+  accounts      Account[]
+  sessions      Session[]
+
+  // Platform Tier Control Strategy
+  isPremium     Boolean   @default(false)
+  isVerified    Boolean   @default(false)
+
+  // Explicit User Profile Metadata
+  age           Int?
+  title         String?   
+  company       String?   
+  location      String?   
+  bio           String?   @db.Text
+  interests     String[]  
+
+  // Messaging Infrastructure Relations
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  
+  // Custom Live Activity Logging Stream
+  activities       ActivityLog[]
+}
+
+// Real-Time Direct Message Thread Table
+model Message {
+  id         String   @id @default(cuid())
+  text       String   @db.Text
+  createdAt  DateTime @default(now())
+  isRead     Boolean  @default(false)
+
+  senderId   String
+  receiverId String
+
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+// Platform Activity Audit Ledger Table
+model ActivityLog {
+  id          String   @id @default(cuid())
+  type        String   // "connection" | "verification" | "system" | "visibility"
+  title       String
+  description String   @db.Text
+  createdAt   DateTime @default(now())
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
