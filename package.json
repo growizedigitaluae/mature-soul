@@ -2,22 +2,26 @@
   "name": "dating-site",
   "version": "0.1.0",
   "private": true,
- "scripts": {
-  "dev": "next dev",
-  "build": "prisma generate && next build",
-  "start": "next start",
-  "lint": "next lint"
-},
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
-    "@prisma/client": "^7.8.0",
+    "@prisma/adapter-pg": "^7.8.0",
+    "dotenv": "^17.4.2",
     "next": "16.2.7",
+    "pg": "^8.22.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@prisma/client": "^7.8.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
@@ -25,5 +29,19 @@
     "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/growizedigitaluae/mature-soul.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/growizedigitaluae/mature-soul/issues"
+  },
+  "homepage": "https://github.com/growizedigitaluae/mature-soul#readme"
 }
